@@ -3,6 +3,17 @@
 #include "soDSDynamicArray.h"
 
 
+int myfunc(const void* a, const void* b) {
+	int* aa, *bb;
+	int res;
+	aa = (int*)a;
+	bb = (int*)b;
+
+	res = *aa - *bb;
+
+	return res;
+}
+
 int main() {
 
 	soDSDynamicArray* da;
@@ -12,7 +23,7 @@ int main() {
 
 	int i;
 
-	for (i = 0; i < 10; i++)
+	for (i = 10; i > 0; i--)
 	{
 		soDSDynamicArrayAdd(da, &i);
 	}
@@ -22,11 +33,15 @@ int main() {
 	int val = 1000;
 	soDSDynamicArrayInsert(da, 5, &val);
 	soDSDynamicArrayPrint(da);
+	
+	/*soDSDynamicArrayRemoveAt(da, 5);
+	soDSDynamicArrayPrint(da);*/
 
-	soDSDynamicArrayRemoveAt(da, 5);
+	soDSDynamicArraySort(da,myfunc);
 	soDSDynamicArrayPrint(da);
 
 	soDSDynamicArrayDestroy(da);
+	
 	getchar();
 	return 0;
 }

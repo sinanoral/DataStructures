@@ -6,7 +6,7 @@
 #define FALSE 0
 #define TRUE  1
 
-#define DEFAULT_CAPACITY 5
+#define DEFAULT_CAPACITY 2
 
 typedef int BOOL;
 
@@ -23,10 +23,10 @@ void soDSDynamicArrayDestroy(soDSDynamicArray* dynamicArray);
 BOOL soDSDynamicArrayAdd(soDSDynamicArray* dynamicArray, const void* pVal);
 BOOL soDSDynamicArrayInsert(soDSDynamicArray* dynamicArray, size_t index, const void* pVal);
 BOOL soDSDynamicArrayRemoveAt(soDSDynamicArray* dynamicArray, size_t index);
+void soDSDynamicArraySort(soDSDynamicArray* dynamicArray, void* sortingFunc);
 void soDSDynamicArrayClear(soDSDynamicArray* dynamicArray);
 void soDSDynamicArrayGetItem(soDSDynamicArray* dynamicArray, size_t index, void* pVal);
 void soDSDynamicArraySetItem(soDSDynamicArray* dynamicArray, const void* pVal, size_t index);
-BOOL soDSDynamicArraySetCapacity(soDSDynamicArray* dynamicArray, size_t index);
 void* soDSDynamicArrayGetArray(soDSDynamicArray* dynamicArray);
 size_t soDSDynamicArrayGetSize(soDSDynamicArray* dynamicArray);
 size_t soDSDynamicArrayGetCapacity(soDSDynamicArray* dynamicArray);
