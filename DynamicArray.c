@@ -3,11 +3,18 @@
 #include <string.h>
 #include "soDSDynamicArray.h"
 
-soDSDynamicArray* soDSDynamicArrayInit(size_t Typesize, size_t Capacity) {
+struct _soDSDynamicArray {
+	void* pArray;
+	size_t Typesize;
+	size_t Size;
+	size_t Capacity;
+};
 
-	soDSDynamicArray* dynamicArray;
+soDSDynamicArray soDSDynamicArrayInit(size_t Typesize, size_t Capacity) {
 
-	if (NULL == (dynamicArray = (soDSDynamicArray*)malloc(sizeof(soDSDynamicArray)))) {
+	soDSDynamicArray dynamicArray;
+
+	if (NULL == (dynamicArray = (soDSDynamicArray)malloc(sizeof(struct _soDSDynamicArray)))) {
 		return NULL;
 	}
 
@@ -21,19 +28,20 @@ soDSDynamicArray* soDSDynamicArrayInit(size_t Typesize, size_t Capacity) {
 	dynamicArray->Size = 0;
 
 	return dynamicArray;
-
 }
 
-soDSDynamicArray* soDSDynamicArrayFastInit(size_t Typesize) {
+soDSDynamicArray soDSDynamicArrayFastInit(size_t Typesize) {
+	
 	return soDSDynamicArrayInit(Typesize, DEFAULT_CAPACITY);
 }
 
-void soDSDynamicArrayDestroy(soDSDynamicArray* dynamicArray) {
+void soDSDynamicArrayDestroy(soDSDynamicArray dynamicArray) {
+	
 	free(dynamicArray->pArray);
 	free(dynamicArray);
 }
 
-BOOL soDSDynamicArrayAdd(soDSDynamicArray* dynamicArray, const void* pVal) {
+BOOL soDSDynamicArrayAdd(soDSDynamicArray dynamicArray, const void* pVal) {
 
 	if (NULL == dynamicArray->pArray) {
 		return FALSE;
@@ -50,7 +58,7 @@ BOOL soDSDynamicArrayAdd(soDSDynamicArray* dynamicArray, const void* pVal) {
 	return TRUE;
 }
 
-BOOL soDSDynamicArrayInsert(soDSDynamicArray* dynamicArray, size_t index, const void* pVal) {
+BOOL soDSDynamicArrayInsert(soDSDynamicArray dynamicArray, size_t index, const void* pVal) {
 
 	if (index > dynamicArray->Size) {
 		return FALSE;
@@ -71,7 +79,7 @@ BOOL soDSDynamicArrayInsert(soDSDynamicArray* dynamicArray, size_t index, const 
 	return TRUE;
 }
 
-BOOL soDSDynamicArrayRemoveAt(soDSDynamicArray* dynamicArray, size_t index) {
+BOOL soDSDynamicArrayRemoveAt(soDSDynamicArray dynamicArray, size_t index) {
 	
 	if (index >= dynamicArray->Size) {
 		return FALSE;
@@ -83,54 +91,46 @@ BOOL soDSDynamicArrayRemoveAt(soDSDynamicArray* dynamicArray, size_t index) {
 	memmove(pDst, pSrc, (dynamicArray->Size - index) * dynamicArray->Typesize);
 	--dynamicArray->Size;
 
-	/*if (dynamicArray->Capacity >= dynamicArray->Size) {
+	if (dynamicArray->Capacity >= dynamicArray->Size * 2) {
 		dynamicArray->Capacity /= 2;
 		dynamicArray->pArray = realloc(dynamicArray->pArray, dynamicArray->Typesize * dynamicArray->Capacity);
-	}*/
+	}
 
 	return TRUE;
 }
 
-void soDSDynamicArraySort(soDSDynamicArray* dynamicArray, void* sortingFunc) {
+void soDSDynamicArraySort(soDSDynamicArray dynamicArray, int sortingFunc) {
 	qsort(dynamicArray->pArray, soDSDynamicArrayGetSize(dynamicArray), dynamicArray->Typesize, sortingFunc);
 }
 
-void soDSDynamicArrayClear(soDSDynamicArray* dynamicArray) {
+void soDSDynamicArrayClear(soDSDynamicArray dynamicArray) {
+	
 	dynamicArray->Size = 0;
 }
 
-void soDSDynamicArrayGetItem(soDSDynamicArray* dynamicArray, size_t index, void* pVal) {
+void soDSDynamicArrayGetItem(soDSDynamicArray dynamicArray, size_t index, void* pVal) {
+	
 	char* pSrc = (char*)dynamicArray->pArray + index * dynamicArray->Typesize;
 	memcpy(pVal, pSrc, dynamicArray->Typesize);
 }
 
-void soDSDynamicArraySetItem(soDSDynamicArray* dynamicArray, const void* pVal, size_t index) {
+void soDSDynamicArraySetItem(soDSDynamicArray dynamicArray, const void* pVal, size_t index) {
+	
 	char* pDst = (char*)dynamicArray->pArray + index * dynamicArray->Typesize;
 	memcpy(pDst, pVal, dynamicArray->Typesize);
 }
 
-void* soDSDynamicArrayGetArray(soDSDynamicArray* dynamicArray) {
+void* soDSDynamicArrayGetArray(soDSDynamicArray dynamicArray) {
+	
 	return dynamicArray->pArray;
 }
 
-size_t soDSDynamicArrayGetSize(soDSDynamicArray* dynamicArray) {
+size_t soDSDynamicArrayGetSize(soDSDynamicArray dynamicArray) {
+	
 	return dynamicArray->Size;
 }
 
-size_t soDSDynamicArrayGetCapacity(soDSDynamicArray* dynamicArray) {
+size_t soDSDynamicArrayGetCapacity(soDSDynamicArray dynamicArray) {
+	
 	return dynamicArray->Capacity;
-}
-
-void soDSDynamicArrayPrint(soDSDynamicArray* dynamicArray) {
-	size_t i;
-	int val;
-	for (i = 0; i < soDSDynamicArrayGetSize(dynamicArray); i++) {
-		soDSDynamicArrayGetItem(dynamicArray, i, &val);
-		printf("%d ", val);
-	}
-
-	printf("\nSize = %lu, Capacity = %lu\n",
-		(unsigned long)soDSDynamicArrayGetSize(dynamicArray), (unsigned long)soDSDynamicArrayGetCapacity(dynamicArray));
-
-	printf("---------------------------------------\n");
 }

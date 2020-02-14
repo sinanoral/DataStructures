@@ -14,9 +14,19 @@ int myfunc(const void* a, const void* b) {
 	return res;
 }
 
+void print(soDSDynamicArray da) {
+	int val;
+
+	for (size_t i = 0; i < soDSDynamicArrayGetSize(da); i++) {
+		soDSDynamicArrayGetItem(da, i, &val);
+		printf("%d ", val);
+	}
+	printf("\n----------------------------------\n");
+}
+
 int main() {
 
-	soDSDynamicArray* da;
+	soDSDynamicArray da;
 	if (NULL == (da = soDSDynamicArrayFastInit(sizeof(int)))) {
 		exit(0);
 	}
@@ -28,20 +38,18 @@ int main() {
 		soDSDynamicArrayAdd(da, &i);
 	}
 
-	soDSDynamicArrayPrint(da);
-
+	print(da);
 	int val = 1000;
 	soDSDynamicArrayInsert(da, 5, &val);
-	soDSDynamicArrayPrint(da);
+	print(da);
 	
-	/*soDSDynamicArrayRemoveAt(da, 5);
-	soDSDynamicArrayPrint(da);*/
+	soDSDynamicArrayRemoveAt(da, 5);
+	print(da);
 
-	soDSDynamicArraySort(da,myfunc);
-	soDSDynamicArrayPrint(da);
+	//soDSDynamicArraySort(da,myfunc);
+	//soDSDynamicArrayPrint(da);
 
 	soDSDynamicArrayDestroy(da);
 	
-	getchar();
 	return 0;
 }
