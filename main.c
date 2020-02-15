@@ -1,7 +1,7 @@
-#include <stdlib.h>
+/*#include <stdlib.h>
 #include <stdio.h>
 #include "soDSDynamicArray.h"
-
+#include "soDSLinkedList.h"
 
 int myfunc(const void* a, const void* b) {
 	int* aa, *bb;
@@ -26,7 +26,7 @@ void print(soDSDynamicArray da) {
 
 int main() {
 
-	soDSDynamicArray da;
+	/*soDSDynamicArray da;
 	if (NULL == (da = soDSDynamicArrayFastInit(sizeof(int)))) {
 		exit(0);
 	}
@@ -50,6 +50,7 @@ int main() {
 	//soDSDynamicArrayPrint(da);
 
 	soDSDynamicArrayDestroy(da);
+
 	
 	return 0;
-}
+}*/

@@ -140,9 +140,12 @@
   <ItemGroup>
     <ClCompile Include="DynamicArray.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="soDSLinkedList.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="soDSDynamicArray.h" />
+    <ClInclude Include="soDSGeneral.h" />
+    <ClInclude Include="soDSLinkedList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

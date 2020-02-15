@@ -2,13 +2,10 @@
 #define SODSDYNAMICARRAY_H_
 
 #include <stddef.h>
-
-#define FALSE 0
-#define TRUE  1
+#include "soDSGeneral.h"
 
 #define DEFAULT_CAPACITY 10
 
-typedef int BOOL;
 typedef struct _soDSDynamicArray* soDSDynamicArray;
 
 soDSDynamicArray soDSDynamicArrayInit(size_t Typesize, size_t Capacity);
