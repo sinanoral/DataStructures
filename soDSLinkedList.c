@@ -64,6 +64,10 @@ BOOL soDSLinkedListAddAtBeginning(soDSLinkedList linkedList, const void* pVal) {
 
 BOOL soDSLinkedListAddAtEnd(soDSLinkedList linkedList, const void* pVal) {
 
+	if (NULL == linkedList->head) {
+		return FALSE;
+	}
+
 	Node* new_node = soDSPrepareNode(linkedList->Typesize);
 	memcpy(new_node->Data, pVal, linkedList->Typesize);
 
@@ -77,6 +81,47 @@ BOOL soDSLinkedListAddAtEnd(soDSLinkedList linkedList, const void* pVal) {
 	return TRUE;
 }
 
+BOOL soDSLinkedListInsert(soDSLinkedList linkedList, size_t index, const void* pVal) {
+
+	if (NULL == linkedList->head) {
+		return FALSE;
+	}
+
+	Node* new_node = soDSPrepareNode(linkedList->Typesize);
+	memcpy(new_node->Data, pVal, linkedList->Typesize);
+
+	Node* temp, * previous = NULL;
+	temp = linkedList->head;
+
+	for (size_t i = 1; i < index; i++) {
+		previous = temp;
+		temp = temp->Next;
+	}
+
+	previous->Next= new_node;
+	new_node->Next = temp;
+
+	return TRUE;
+}
+
+void getitem(Node* a, void* val) {
+	memcpy(val, a->Data, sizeof(int));
+}
+
+void print(soDSLinkedList ll) {
+
+	int i;
+	Node* temp;
+	temp = ll->head;
+	
+	while (temp != NULL) 
+	{
+		getitem(temp, &i);
+		printf("%d ", i);
+		temp = temp->Next;
+	}
+}
+
 int main() {
 
 	soDSLinkedList ll;
@@ -85,18 +130,15 @@ int main() {
 	int val = 5;
 	int val1 = 6;
 	int val2 = 7;
+	int val3 = 11;
+	int val4 = 13;
 	soDSLinkedListAddAtBeginning(ll, &val);
 	soDSLinkedListAddAtBeginning(ll, &val1);
 	soDSLinkedListAddAtEnd(ll, &val2);
+	soDSLinkedListAddAtBeginning(ll, &val3);
+	soDSLinkedListInsert(ll, 2, &val4);
 
-	int a,b,f;
-	void* c = &b;
-	void* d = &a;
-	void* g = &f;
-	memcpy(c,ll->head->Data,sizeof(int));
-	memcpy(d, ll->head->Next->Data, sizeof(int));
-	memcpy(g, ll->head->Next->Next->Data, sizeof(int));
-	printf("%d->%d->%d",b, a, f);
+	print(ll);
 
 	return 0;
 }
