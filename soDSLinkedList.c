@@ -27,6 +27,15 @@ static Node* soDSPrepareNode(size_t Typesize) {
 	return new_node;
 }
 
+BOOL soDSLinkedListIsEmpty(soDSLinkedList linkedList) {
+
+	if (NULL == linkedList->head)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
 
 soDSLinkedList soDSLinkedListInit(size_t Typesize) {
 
@@ -64,10 +73,6 @@ BOOL soDSLinkedListAddAtBeginning(soDSLinkedList linkedList, const void* pVal) {
 
 BOOL soDSLinkedListAddAtEnd(soDSLinkedList linkedList, const void* pVal) {
 
-	if (NULL == linkedList->head) {
-		return FALSE;
-	}
-
 	Node* new_node = soDSPrepareNode(linkedList->Typesize);
 	memcpy(new_node->Data, pVal, linkedList->Typesize);
 
@@ -104,8 +109,68 @@ BOOL soDSLinkedListInsert(soDSLinkedList linkedList, size_t index, const void* p
 	return TRUE;
 }
 
-void getitem(Node* a, void* val) {
-	memcpy(val, a->Data, sizeof(int));
+BOOL soDSLinkedListRemoveFromEnd(soDSLinkedList linkedList) {
+
+	if (NULL == linkedList->head) {
+		return FALSE;
+	}
+
+	Node* temp = linkedList->head;
+	Node* prev = NULL;
+	while (NULL != temp->Next) {
+		prev = temp;
+		temp = temp->Next;
+	}
+
+	free(temp->Data);
+	free(temp);
+	prev->Next = NULL;
+	
+	return TRUE;
+}
+
+BOOL soDSLinkedListRemoveFromBeginning(soDSLinkedList linkedList) {
+
+	if (NULL == linkedList->head) {
+		return FALSE;
+	}
+
+	Node* temp = linkedList->head;
+	linkedList->head = linkedList->head->Next;
+	free(temp->Data);
+	free(temp);
+
+	return TRUE;
+}
+
+/*BOOL soDSLinkedListRemoveAt(soDSLinkedList linkedList, size_t index) {
+	
+	if (NULL == linkedList->head) {
+		return FALSE;
+	}
+
+	Node* temp = linkedList->head;
+	Node* prev = temp;
+
+	if (0 == index) {
+		linkedList->head = linkedList->head->Next;
+		return TRUE;
+	}
+
+	for (size_t i = 0; i < index - 1; i++) {
+		prev = temp;
+		temp = temp->Next;
+	}
+
+	prev->Next = temp->Next;
+	free(temp->Data);
+	free(temp);
+
+	return TRUE;
+}*/
+
+void soDSLinkedListGetItem(soDSLinkedList linkedList, Node* node, void* pVal) {
+	memcpy(pVal, node->Data, linkedList->Typesize);
 }
 
 void print(soDSLinkedList ll) {
@@ -116,7 +181,7 @@ void print(soDSLinkedList ll) {
 	
 	while (temp != NULL) 
 	{
-		getitem(temp, &i);
+		soDSLinkedListGetItem(ll, temp, &i);
 		printf("%d ", i);
 		temp = temp->Next;
 	}
@@ -137,7 +202,9 @@ int main() {
 	soDSLinkedListAddAtEnd(ll, &val2);
 	soDSLinkedListAddAtBeginning(ll, &val3);
 	soDSLinkedListInsert(ll, 2, &val4);
-
+	soDSLinkedListRemoveFromEnd(ll);
+	soDSLinkedListRemoveFromBeginning(ll);
+	//soDSLinkedListRemoveAt(ll,1);
 	print(ll);
 
 	return 0;
